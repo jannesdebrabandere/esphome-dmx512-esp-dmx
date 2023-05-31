@@ -14,8 +14,7 @@ static const int DMX_BREAK_LEN = 92;
 static const int DMX_MAB_LEN = 12;
 static const int DMX_MIN_INTERVAL_MS = 23;
 
-//NEW
-byte data[DMX_PACKET_SIZE];
+//NE
 int transmitPin = 32;
 int receivePin = 33;
 int enablePin = 21;
