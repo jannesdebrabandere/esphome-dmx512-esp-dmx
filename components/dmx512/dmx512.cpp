@@ -19,12 +19,17 @@ void DMX512::loop() {
     }
   }
   if(update) {
-    this->uart_->flush();
+    /*this->uart_->flush();
     this->send_break();
+    
+    this->uart_->write_array(this->device_values_, this->max_chan_ + 1);*/
     this->device_values_[0] = 0;
-    this->uart_->write_array(this->device_values_, this->max_chan_ + 1);
+    dmx_write(dmxPort, this->device_values_, DMX_PACKET_SIZE);
     this->update_ = false;
     this->last_update_ = millis();
+
+    dmx_send(dmxPort, DMX_PACKET_SIZE);
+
   }
 }
 
@@ -35,11 +40,11 @@ void DMX512::dump_config() {
 void DMX512::setup() {
   for(int i = 0; i < DMX_MSG_SIZE; i++)
     this->device_values_[i] = 0;
-  if(this->pin_enable_) {
-    ESP_LOGD(TAG, "Enabling RS485 module");
-    this->pin_enable_->setup();
-    this->pin_enable_->digital_write(true);
-  }
+
+    ESP_LOGD(TAG, "Setup RS485 ");
+
+    dmx_set_pin(dmxPort, transmitPin, receivePin, enablePin);
+    dmx_driver_install(dmxPort, DMX_DEFAULT_INTR_FLAGS);
 }
 
 void DMX512::set_channel_used(uint16_t channel) {

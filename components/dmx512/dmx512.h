@@ -4,12 +4,23 @@
 #include "esphome/components/uart/uart.h"
 #include "esphome/components/output/float_output.h"
 
+//NEW
+#include "esp_dmx.h"
+
 static const uint16_t UPDATE_INTERVAL_MS = 500;
 static const uint16_t DMX_MAX_CHANNEL = 512;
 static const uint16_t DMX_MSG_SIZE = DMX_MAX_CHANNEL + 1;
 static const int DMX_BREAK_LEN = 92;
 static const int DMX_MAB_LEN = 12;
 static const int DMX_MIN_INTERVAL_MS = 23;
+
+//NEW
+byte data[DMX_PACKET_SIZE];
+int transmitPin = 32;
+int receivePin = 33;
+int enablePin = 21;
+
+dmx_port_t dmxPort = 1;
 
 namespace esphome {
 namespace dmx512 {
